@@ -1,5 +1,6 @@
 //Ethan Armstrong
-//w.ethan.armstrong.com@gmail.com
+//w.ethan.armstrong@gmail.com
+
 import wixData from "wix-data";
 import wixLocation from 'wix-location';
 
@@ -26,7 +27,6 @@ $w.onReady(function () {
 		if(isNaN(val) === true) {
 			reject("must be a valid phone number");
 		}
-
 	});
 	$w("#input7").onCustomValidation( (value, reject) => {
 		if(value.length !== 12 && value.length > 0) {
@@ -47,9 +47,7 @@ export function submitToCollection(collection, data) {
 			$w('#Error1').hide();
 			$w('#Error2').hide();
 			$w('#Error3').hide();
-
 			console.log('Redirecting...');
-
 			wixLocation.to("/redirect2");
 		})
 		.catch((err) =>{
@@ -64,7 +62,6 @@ export function submitToCollection(collection, data) {
 export function updtaeMember(collection, data) {
 	wixData.update(collection, data)
 		.then((res) => {
-			//console.log('updated')
 			$w('#Success').show();
 			$w('#Error1').hide();
 			$w('#Error2').hide();
@@ -87,15 +84,11 @@ export function button1_click_1(event) {
 	let playerLast = $w('#input5').value;
 	let phone2 = $w('#input6').value;
 	let phone3 = $w('#input7').value;
-
 	let ad1 = $w("#input8").value;
 	let ad2 = $w("#input9").value;
 	let ad3 = $w("#input10").value;
-
 	let address = ad1 + ", " + ad2 + ", " + ad3;
-
 	let radio = $w('#radio1').value;
-
 	datas = {
 					'firstName': first,
 					'lastName': last,
@@ -106,12 +99,9 @@ export function button1_click_1(event) {
 					'address': address,
 					'consent': radio,
 			}
-
 	AddParent(playerLast);
-
 	console.log('after finding player:')
 	console.log(datas)
-	
 	for (var i=0; i<9; i++) {
 		if (i !== 7 && i !== 6) {
 			var k = i +1
@@ -120,19 +110,13 @@ export function button1_click_1(event) {
 				$w('#Error1').show();
 				$w('#Error2').hide();
 				$w('#Error3').hide();
-				//console.log('#' + "input" + k.toString())
-				//console.log($w('#' + "input" + k.toString()).validity)
 				return null
-
 			}
 		}
 	}
 	
 	var name = first + last;
 	name = name.toLowerCase();
-
-	
-
 	wixData.query("Parents")
 		.limit(1000)
 		.find()
@@ -144,7 +128,6 @@ export function button1_click_1(event) {
 				let member = members[j];
 				let memberName = member.firstName + member.lastName;
 				memberName = memberName.toLowerCase();
-
 				if (memberName === name) {
 					//console.log(name + 'esists');
 					identical = member._id;
@@ -154,7 +137,6 @@ export function button1_click_1(event) {
 			if (identical === null) {
 				console.log('new user');
 				console.log(datas)
-
 				submitToCollection("Parents", datas)
 				/*$w('#input1').value = null;
 				$w('#input2').value = null;
@@ -166,8 +148,6 @@ export function button1_click_1(event) {
 				$w('#input8').value = null;
 				$w('#input9').value = null;
 				$w('#input10').value = null;*/
-
-
 			} else {
 				datas['_id'] = identical;
 				$w('#promptBox').show()
@@ -183,7 +163,6 @@ export function button1_click_1(event) {
 				$w('#input9').disable()
 				$w('#input10').disable()
 			}
-			
 		})
 		.catch((err) =>{
 			$w('#Success').hide();
@@ -192,8 +171,6 @@ export function button1_click_1(event) {
 			$w('#Error3').hide();
 			console.log(err)
 		});
-				
-	
 }
 
 export function Update_click(event) {
@@ -209,7 +186,6 @@ export function Update_click(event) {
 	$w('#input9').enable()
 	$w('#input10').enable()
 	$w('#button1').enable()
-
 	updtaeMember("Parents", datas)
 }
 
@@ -246,9 +222,6 @@ export function AddParent(lastname) {
 				if (member['lastName'].toLowerCase() === lastname.toLowerCase()) {
 					IDS += member['_id'];
 					IDS += ','
-					//console.log('player id then key:');
-					//console.log(member['_id']);
-					//console.log('match: ' + key)
 				}
 			}
 			if (IDS.length === 0) {
@@ -257,7 +230,6 @@ export function AddParent(lastname) {
 				$w('#Error2').hide();
 				$w('#Error3').show();
 				console.log('id not found')
-				//console.log(IDS);
 				datas = null
 			} else {
 				IDS = IDS.splice(0,-1);
@@ -270,23 +242,15 @@ export function AddParent(lastname) {
 		.catch((err) =>{
 			console.log(err)
 		});
-
 }
 
 export function phone_keyPress(event) {
 	let press = event.key;
-	//console.log(press);
 	let str = $w('#input3').value;
-
 	if ('1234567890'.includes(press)) {
 		str += press;
 	}
-
-	//console.log('str');
-	//console.log(str);
-	
 	let num = remove_dash(str)
-
 	if (num.length === 3 && press !== 'Backspace'){
 		str += '-';
 		$w('#input3').value = str;
@@ -294,39 +258,27 @@ export function phone_keyPress(event) {
 	if (num.length === 6 && press !== 'Backspace'){
 		str += '-';
 		$w('#input3').value = str;
-		
 	}
-	
 }
 
 export function remove_dash(string) {
 	let num = '';
 	for (var i = 0; i < string.length; i++) {
   		let x = string.charAt(i);
-		//console.log(x);
 		if (x !== '-') {
 			num += x;
 		}
 	}
-
 	return num;
-
 }
 
 export function input6_keyPress(event) {
 	let press = event.key;
-	//console.log(press);
 	let str = $w('#input6').value;
-
 	if ('1234567890'.includes(press)) {
 		str += press;
 	}
-
-	//console.log('str');
-	//console.log(str);
-	
 	let num = remove_dash(str)
-
 	if (num.length === 3 && press !== 'Backspace'){
 		str += '-';
 		$w('#input6').value = str;
@@ -334,24 +286,16 @@ export function input6_keyPress(event) {
 	if (num.length === 6 && press !== 'Backspace'){
 		str += '-';
 		$w('#input6').value = str;
-		
 	} 
 }
 
 export function input7_keyPress(event) {
 	let press = event.key;
-	//console.log(press);
 	let str = $w('#input7').value;
-
 	if ('1234567890'.includes(press)) {
 		str += press;
 	}
-
-	//console.log('str');
-	//console.log(str);
-	
 	let num = remove_dash(str)
-
 	if (num.length === 3 && press !== 'Backspace'){
 		str += '-';
 		$w('#input7').value = str;
@@ -359,6 +303,5 @@ export function input7_keyPress(event) {
 	if (num.length === 6 && press !== 'Backspace'){
 		str += '-';
 		$w('#input7').value = str;
-		
 	} 
 }
