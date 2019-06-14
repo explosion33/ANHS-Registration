@@ -1,5 +1,6 @@
 //Ethan Armstrong
-//w.ethan.armstrong.com@gmail.com
+//w.ethan.armstrong@gmail.com
+
 import wixData from "wix-data";
 import wixLocation from 'wix-location';
 
@@ -14,13 +15,10 @@ $w.onReady(function () {
 			//must be equal to 12 characters
   		}
 		if(isNaN(remove_dash(value)) === true) {
-			//must be a numbeer
+			//must be a number
 			reject("must be a valid phone number");
 		}
-		
-
 	});
-
 });
 
 export function submitToCollection(collection, data) {
@@ -31,7 +29,6 @@ export function submitToCollection(collection, data) {
 			$w('#Success').show();
 			$w('#Error1').hide();
 			$w('#Error2').hide();
-
 			wixLocation.to("/redirect1");
 		})
 		.catch((err) =>{
@@ -64,7 +61,6 @@ export function updtaeMember(collection, data) {
 
 export function button1_click(event) {
 	//called on submit button click
-	
 	//gets all data from boxes and stores as variables
 	let last = $w('#input1').value;
 	let first = $w('#input2').value;
@@ -74,10 +70,8 @@ export function button1_click(event) {
 	let year = $w('#input6').value;
 	let level = $w('#dropdown1').value;
 	let confirm = $w("#radio1").value;
-	
 	//turn strings to ints
 	year = parseInt(year);
-
 	datas = {
 					'firstName': first,
 					'lastName': last,
@@ -90,7 +84,6 @@ export function button1_click(event) {
 
 	let v = $w('#input1').validity;
 	console.log(v)
-
 	//validity check for all 'input' boxes
 	for (var i=0; i<4; i++) {
 		var k = i +1
@@ -105,7 +98,6 @@ export function button1_click(event) {
 	
 	var name = first + last;
 	name = name.toLowerCase();
-
 	wixData.query("Memberships")
 	//checks for duplicate members
 		.limit(1000)
@@ -115,14 +107,11 @@ export function button1_click(event) {
 			var members = res.items;
 			var len = res.length;
 			var identical = null;
-
 			//checks through query for matching names
 			for (var j = 0; j < len; j++) {
 				let member = members[j];
 				let memberName = member.firstName + member.lastName;
-
 				memberName = memberName.toLowerCase();
-
 				if (memberName === name) {
 					//if member exists stop searching
 					console.log(name + 'esists');
@@ -150,7 +139,6 @@ export function button1_click(event) {
 				$w('#dropdown1').disable()
 				$w('#button1').disable()
 			}
-			
 		})
 		.catch((err) =>{
 			//error querying the database
@@ -173,7 +161,6 @@ export function Update_click(event) {
 	$w('#input6').enable()
 	$w('#dropdown1').enable()
 	$w('#button1').enable()
-
 	updtaeMember("Memberships", datas)
 }
 
@@ -195,14 +182,11 @@ export function phone_keyPress(event) {
 	//adds dashes into the phone number
 	let press = event.key;
 	let str = $w('#input3').value;
-
 	//makes sure the key being pressed is a number
 	if ('1234567890'.includes(press)) {
 		str += press;
 	}
-
 	let num = remove_dash(str)
-
 	//adds a hyphen if the number has a length of 3 or 6
 	if (num.length === 3 && press !== 'Backspace'){
 		str += '-';
@@ -211,9 +195,7 @@ export function phone_keyPress(event) {
 	if (num.length === 6 && press !== 'Backspace'){
 		str += '-';
 		$w('#input3').value = str;
-		
 	}
-	
 }
 
 export function remove_dash(string) {
