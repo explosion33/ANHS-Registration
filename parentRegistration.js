@@ -69,6 +69,8 @@ export function updtaeMember(collection, data) {
 			$w('#Error1').hide();
 			$w('#Error2').hide();
 			$w('#Error3').hide();
+
+			wixLocation.to("/redirect2");
 		})
 		.catch((err) =>{
 			$w('#Success').hide();
