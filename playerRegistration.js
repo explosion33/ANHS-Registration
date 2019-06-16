@@ -21,6 +21,23 @@ $w.onReady(function () {
 
 	});
 
+	$w("#radio1").onCustomValidation( (value, reject) => {
+		//custom validation for phone number input field
+		console.log('radio value: ' + value)
+		console.log(typeof(value))
+		if (value === 'Yes'){
+			console.log(value)
+		}
+		else if (value === 'No'){
+			console.log(value)
+		}
+		else {
+			console.log('error ' + value + ' is invalid')
+			reject('must select a value')
+		}
+  		
+	});
+
 });
 
 export function submitToCollection(collection, data) {
@@ -52,6 +69,8 @@ export function updtaeMember(collection, data) {
 			$w('#Success').show();
 			$w('#Error1').hide();
 			$w('#Error2').hide();
+
+			wixLocation.to("/redirect1");
 		})
 		.catch((err) =>{
 			//errr
@@ -74,6 +93,8 @@ export function button1_click(event) {
 	let year = $w('#input6').value;
 	let level = $w('#dropdown1').value;
 	let confirm = $w("#radio1").value;
+
+	console.log(confirm);
 	
 	//turn strings to ints
 	year = parseInt(year);
@@ -85,11 +106,8 @@ export function button1_click(event) {
 					'email': email,
 					'graduationYear': year,
 					'teamLevel': level,
-					'confirm': confirm,
+					'consent': confirm,
 				}
-
-	let v = $w('#input1').validity;
-	console.log(v)
 
 	//validity check for all 'input' boxes
 	for (var i=0; i<4; i++) {
@@ -103,6 +121,14 @@ export function button1_click(event) {
 		}
 	}
 	
+	//validity check for the radio Yes or No buttons
+	if ($w('#radio1').validity.valid === false) {
+		$w('#Success').hide();
+		$w('#Error1').show();
+		$w('#Error2').hide();
+		return null
+	}
+
 	var name = first + last;
 	name = name.toLowerCase();
 
